@@ -1,4 +1,17 @@
-import { FileText, CheckCircle2, Copy, ClipboardCheck, Eye, BarChart3 } from "lucide-react";
+import {
+    FileText,
+    CheckCircle2,
+    Copy,
+    ClipboardCheck,
+    Eye,
+    BarChart3,
+    Shield,
+    Network,
+    Radar,
+    Globe,
+    MailWarning,
+    UserRound,
+} from "lucide-react";
 import {
     ResponsiveContainer,
     BarChart,
@@ -14,6 +27,11 @@ import {
 import PageShell from "../components/layout/PageShell";
 import PageHeader from "../components/layout/PageHeader";
 import EmptyState from "../components/ui/EmptyState";
+import { defaultEcosystemIncident } from "../data/ecosystem/incidents";
+import { jsPDF } from "jspdf";
+
+import PanelCard from "../components/ui/PanelCard";
+import PanelHeader from "../components/ui/PanelHeader";
 
 /* ========================================
    📤 Output View
@@ -78,6 +96,113 @@ export default function OutputView({
         },
     ];
 
+    const incident = defaultEcosystemIncident;
+
+    const reportReadiness = simulationFinished
+        ? reportGenerated
+            ? 100
+            : 72
+        : 35;
+
+    const evidenceCount =
+        (incident?.iocs?.length ?? 0) +
+        (incident?.mitre?.length ?? 0) +
+        alertCount +
+        logCount;
+
+    function exportClientPDF() {
+        const doc = new jsPDF();
+        const pageWidth = doc.internal.pageSize.getWidth();
+
+        let y = 18;
+
+        function section(title) {
+            y += 8;
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(13);
+            doc.text(title, 14, y);
+            y += 7;
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(10);
+        }
+
+        function line(label, value) {
+            const text = `${label}: ${value ?? "N/A"}`;
+            const wrapped = doc.splitTextToSize(text, pageWidth - 28);
+            doc.text(wrapped, 14, y);
+            y += wrapped.length * 6;
+        }
+
+        function ensureSpace(space = 30) {
+            if (y + space > 280) {
+                doc.addPage();
+                y = 18;
+            }
+        }
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(18);
+        doc.text("Purple Team Lab - Client Incident Report", 14, y);
+
+        y += 8;
+        doc.setFont("helvetica", "normal");
+        doc.setFontSize(10);
+        doc.text(`Generated: ${new Date().toLocaleString()}`, 14, y);
+
+        section("Executive Summary");
+        line("Incident", `${incident.id} - ${incident.title}`);
+        line("Status", visibleStatus);
+        line("Severity", incident.severity);
+        line("Summary", incident.summary);
+        line("Report Readiness", `${reportReadiness}%`);
+        line("Evidence Count", evidenceCount);
+
+        ensureSpace();
+        section("Victim / Attacker Context");
+        line("Victim User", incident.victim.user);
+        line("Victim Email", incident.victim.email);
+        line("Role", incident.victim.role);
+        line("Attacker IP", incident.attacker.ip);
+        line("Attacker Domain", incident.attacker.domain);
+        line("Attacker URL", incident.attacker.url);
+
+        ensureSpace();
+        section("Simulation Results");
+        line("Mode", mode);
+        line("Detection Status", visibleStatus);
+        line("Coverage", `${mode === "campaign" ? selectedCampaignCoverage : adjustedState?.adjustedCoverage ?? 0}%`);
+        line("Observed Logs", logCount);
+        line("Triggered Alerts", alertCount);
+        line("Enabled Controls", activeControls.length ? activeControls.join(", ") : "None");
+
+        ensureSpace();
+        section("MITRE Mapping");
+        incident.mitre.forEach((technique) => {
+            ensureSpace(12);
+            line(technique.id, `${technique.name} - ${technique.tactic}`);
+        });
+
+        ensureSpace();
+        section("Indicators of Compromise");
+        incident.iocs.forEach((ioc) => {
+            ensureSpace(12);
+            line(ioc.type.toUpperCase(), ioc.value);
+        });
+
+        ensureSpace();
+        section("Timeline");
+        incident.timeline.forEach((event) => {
+            ensureSpace(16);
+            line(`${event.time} / ${event.stage}`, `${event.title} - ${event.message}`);
+        });
+
+        ensureSpace();
+        section("Analyst Summary");
+        line("Purple Summary", purpleSummary);
+
+        doc.save(`${incident.id}-purple-team-client-report.pdf`);
+    }
+
     return (
         <PageShell
             header={
@@ -93,8 +218,8 @@ export default function OutputView({
                     {/* ========================================
              ✅ Global Purple Snapshot
           ======================================== */}
-                    <div className="rounded-3xl border border-cyber-border bg-cyber-panel/90 p-4 shadow-cyber">
-                        <SectionTitle
+                    <PanelCard variant="elevated">
+                        <PanelHeader
                             icon={<CheckCircle2 className="h-5 w-5 text-cyber-green" />}
                             title="Global Purple Snapshot"
                             subtitle="High-level detection distribution across the lab"
@@ -123,7 +248,7 @@ export default function OutputView({
                                 )}
                             />
                         </div>
-                    </div>
+                    </PanelCard>
                 </>
             }
             center={
@@ -131,25 +256,82 @@ export default function OutputView({
                     {/* ========================================
              📄 Purple Report
           ======================================== */}
-                    <div className="rounded-3xl border border-cyber-border bg-cyber-panel/90 p-4 shadow-cyber">
-                        <SectionTitle
-                            icon={<FileText className="h-5 w-5 text-cyber-blue" />}
-                            title="Purple Report"
-                            subtitle={
-                                mode === "campaign"
-                                    ? "Generate a global campaign report"
-                                    : "Generate a final report for the active scenario"
-                            }
+                    <PanelCard variant="intel">
+                        <PanelHeader
+                            icon={<Shield className="h-5 w-5 text-cyber-violet" />}
+                            title="Executive Incident Report"
+                            subtitle="Client-ready summary generated from the shared ecosystem incident"
                         />
 
-                        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                        <div className="mt-4 rounded-2xl border border-cyber-violet/20 bg-cyber-violet/10 p-4">
+                            <div className="flex flex-col gap-4 xl:flex-row xl:items-start xl:justify-between">
+                                <div>
+                                    <p className="text-xs uppercase tracking-[0.25em] text-cyber-violet">
+                                        {incident.id}
+                                    </p>
+                                    <h3 className="mt-2 text-2xl font-bold text-cyber-text">
+                                        {incident.title}
+                                    </h3>
+                                    <p className="mt-3 text-sm leading-7 text-cyber-muted">
+                                        {incident.summary}
+                                    </p>
+                                </div>
+
+                                <div className="grid min-w-[220px] grid-cols-2 gap-2">
+                                    <MiniStat label="Readiness" value={`${reportReadiness}%`} tone="text-cyber-green" />
+                                    <MiniStat label="Evidence" value={evidenceCount} tone="text-cyber-blue" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-4">
+                            <EvidenceCard
+                                icon={<UserRound className="h-4 w-4 text-cyber-violet" />}
+                                label="Victim"
+                                value={incident.victim.user}
+                            />
+                            <EvidenceCard
+                                icon={<Globe className="h-4 w-4 text-cyber-red" />}
+                                label="Source IP"
+                                value={incident.attacker.ip}
+                            />
+                            <EvidenceCard
+                                icon={<MailWarning className="h-4 w-4 text-cyber-amber" />}
+                                label="Domain"
+                                value={incident.attacker.domain}
+                            />
+                            <EvidenceCard
+                                icon={<Radar className="h-4 w-4 text-cyber-blue" />}
+                                label="Technique"
+                                value={incident.context.technique}
+                            />
+                        </div>
+                    </PanelCard>
+
+                    <PanelCard variant="signal">
+                        <PanelHeader
+                            icon={<FileText className="h-5 w-5 text-cyber-blue" />}
+                            title="Purple Report"
+                            subtitle={mode === "campaign" ? "Generate a global campaign report" : "Generate a final report for the active scenario"}
+                        />
+
+                        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
                             <button
                                 onClick={() => setReportGenerated(true)}
-                                disabled={!simulationFinished}
+                                disabled={false}
                                 className="inline-flex items-center justify-center gap-2 rounded-2xl border border-cyber-blue/30 bg-cyber-blue/10 px-4 py-3 text-sm font-semibold text-white transition hover:bg-cyber-blue/20 disabled:cursor-not-allowed disabled:opacity-40"
                             >
                                 <FileText className="h-4 w-4" />
                                 Generate Report
+                            </button>
+
+                            <button
+                                onClick={exportClientPDF}
+                                disabled={false}
+                                className="inline-flex items-center justify-center gap-2 rounded-2xl border border-cyber-green/30 bg-cyber-green/10 px-4 py-3 text-sm font-semibold text-white transition hover:bg-cyber-green/20 disabled:cursor-not-allowed disabled:opacity-40"
+                            >
+                                <FileText className="h-4 w-4" />
+                                Export Client PDF
                             </button>
 
                             <button
@@ -349,7 +531,7 @@ export default function OutputView({
                                 )}
                             </div>
                         )}
-                    </div>
+                    </PanelCard>
                 </>
             }
             right={
@@ -357,8 +539,72 @@ export default function OutputView({
                     {/* ========================================
              📊 Coverage Analytics
           ======================================== */}
-                    <div className="rounded-3xl border border-cyber-border bg-cyber-panel/90 p-4 shadow-cyber">
-                        <SectionTitle
+                    <PanelCard variant="threat">
+                        <PanelHeader
+                            icon={<Network className="h-5 w-5 text-cyber-violet" />}
+                            title="Report Evidence"
+                            subtitle="MITRE mapping and IoC bundle for the final report"
+                        />
+                        <p className="text-xs text-cyber-muted mt-2">
+                            {incident.mitre.length} MITRE techniques · {incident.iocs.length} indicators
+                        </p>
+
+                        <div className="mt-4 space-y-4">
+                            <div>
+                                <p className="mb-2 text-xs uppercase tracking-wide text-cyber-muted">
+                                    MITRE Techniques
+                                </p>
+                                <div className="space-y-2">
+                                    {incident.mitre.map((technique) => (
+                                        <PanelCard variant="glass" dense>
+                                            <div className="flex items-start justify-between gap-2">
+                                                <div>
+                                                    <p className="text-sm font-semibold text-cyber-text">
+                                                        {technique.id}
+                                                    </p>
+                                                    <p className="text-xs text-cyber-muted">
+                                                        {technique.name}
+                                                    </p>
+                                                </div>
+
+                                                <span className="rounded-lg border border-cyber-violet/30 bg-cyber-violet/10 px-2 py-0.5 text-[10px] font-semibold text-cyber-violet">
+                                                    {technique.tactic}
+                                                </span>
+                                            </div>
+                                        </PanelCard>
+                                    ))}
+                                </div>
+                            </div>
+
+                            <div>
+                                <p className="mb-2 text-xs uppercase tracking-wide text-cyber-muted">
+                                    Indicators
+                                </p>
+                                <div className="space-y-2">
+                                    {incident.iocs.map((ioc) => (
+                                        <PanelCard variant="threat" dense>
+                                            <div className="flex items-center justify-between">
+                                                <p className="text-[10px] uppercase tracking-[0.18em] text-cyber-muted">
+                                                    {ioc.type}
+                                                </p>
+
+                                                <span className="rounded-md border border-cyber-red/30 bg-cyber-red/10 px-2 py-0.5 text-[10px] text-cyber-red">
+                                                    IOC
+                                                </span>
+                                            </div>
+
+                                            <p className="mt-2 break-words font-mono text-xs text-cyber-text">
+                                                {ioc.value}
+                                            </p>
+                                        </PanelCard>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </PanelCard>
+
+                    <PanelCard variant="elevated">
+                        <PanelHeader
                             icon={<Eye className="h-5 w-5 text-cyan-400" />}
                             title="Coverage Analytics"
                             subtitle="Scenario and lab-wide visual outputs"
@@ -419,7 +665,7 @@ export default function OutputView({
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </PanelCard>
                 </>
             }
         />
@@ -429,18 +675,6 @@ export default function OutputView({
 /* ========================================
    🧩 UI Helpers
 ======================================== */
-
-function SectionTitle({ icon, title, subtitle }) {
-    return (
-        <div>
-            <div className="flex items-center gap-2">
-                {icon}
-                <h2 className="text-lg font-semibold">{title}</h2>
-            </div>
-            <p className="mt-1 text-sm text-cyber-muted">{subtitle}</p>
-        </div>
-    );
-}
 
 function StatusBadge({ status, children }) {
     const styles =
@@ -470,9 +704,25 @@ function ReportRow({ label, value }) {
 
 function MiniStat({ label, value, tone = "text-cyber-text" }) {
     return (
-        <div className="rounded-2xl border border-cyber-border bg-cyber-panel2 p-4">
+        <PanelCard variant="glass" dense>
             <p className="text-xs uppercase tracking-wide text-cyber-muted">{label}</p>
-            <p className={`mt-2 text-xl font-bold break-words ${tone}`}>{value}</p>
-        </div>
+            <p className={`mt-2 break-words text-xl font-bold ${tone}`}>{value}</p>
+        </PanelCard>
+    );
+}
+
+function EvidenceCard({ icon, label, value }) {
+    return (
+        <PanelCard variant="glass" dense>
+            <div className="flex items-center gap-2">
+                {icon}
+                <p className="text-xs uppercase tracking-wide text-cyber-muted">
+                    {label}
+                </p>
+            </div>
+            <p className="mt-2 break-words text-sm font-semibold text-cyber-text">
+                {value}
+            </p>
+        </PanelCard>
     );
 }

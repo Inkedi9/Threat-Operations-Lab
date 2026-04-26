@@ -1,29 +1,41 @@
-# 🟣 Purple Team Lab
+# 🟣 Purple Team Core
 
-> Simulate attacks. Validate defenses. Measure security posture.
+> Central command hub for attack simulation, detection validation and incident reporting.
 
 ---
 
 ## 🔴 Live Demo
 
-👉 https://purple-team-lab.vercel.app/
+👉 https://purple-team-core.vercel.app/
+
+---
 
 ## 🚀 Overview
 
-**Purple Team Lab** is an interactive cybersecurity web application designed to simulate realistic attack scenarios and evaluate how well defensive controls detect and respond.
+**Purple Team Core** is the central application of the Threat Operations Lab ecosystem.
 
-It bridges the gap between:
+It allows you to:
 
-- 🔴 Red Team (attack simulation)
-- 🔵 Blue Team (detection & monitoring)
-- 🟣 Purple Team (validation & improvement)
+- Simulate cyber attacks
+- Validate defensive controls
+- Analyze detection coverage
+- Generate client-ready incident reports
+
+This app represents the **Purple Team layer**, bridging:
+
+- 🔴 Offensive simulation
+- 🔵 Defensive monitoring
+- 🟣 Security validation
 
 ---
 
 ## 🎯 Key Objective
 
-Provide a hands-on environment to understand the full security lifecycle:
-Attack → Telemetry → Detection → Validation → Improvement
+Provide a **full security feedback loop**:
+
+```text
+Attack → Telemetry → Detection → Coverage → Report
+```
 
 ---
 
@@ -31,70 +43,103 @@ Attack → Telemetry → Detection → Validation → Improvement
 
 ### 🔴 Attack Simulation
 
-- Bruteforce login
-- Network scan
-- Credential dumping (Mimikatz-like)
-- Data exfiltration
+- Phishing-based compromise scenarios
+- Credential abuse simulation
+- Multi-stage attack flows
 
-### 🔵 Detection & Telemetry
+---
 
-- Event timeline (logs, alerts, actions)
-- Detection visibility
-- Alert generation
+### 🔵 Detection & Visibility
 
-### 🟣 Purple Team Validation
-
+- Logs & alerts correlation
 - Detection status:
   - Detected
   - Partially Detected
   - Missed
-- Coverage score
-- Detection gaps identification
 
-### 🛡️ Defensive Controls
+- Alert & telemetry tracking
 
-- MFA
-- EDR
-- IDS
-- SIEM correlation
-- DLP
+---
 
-→ Toggle controls and instantly see their impact
+### 🟣 Purple Team Validation
+
+- Coverage scoring
+- Detection gap analysis
+- Scenario vs campaign comparison
+
+---
+
+### ⚔️ Campaign Mode
+
+- Chain multiple scenarios
+- Simulate full attack paths
+- Global coverage scoring
+
+---
+
+### 📄 Reporting Engine (V1.6)
+
+- Scenario & campaign reports
+- Executive summary
+- MITRE ATT&CK mapping
+- IoC evidence bundle
+- Timeline reconstruction
+- ✅ **Client-ready PDF export**
 
 ---
 
 ### 📊 Analytics
 
 - Radar coverage visualization
-- Global detection metrics
-- Scenario vs Campaign comparison
+- Detection distribution
+- Global lab metrics
 
 ---
 
-### ⚔️ Campaign Mode
+### 🔁 Replay Engine
 
-- Chain multiple attack scenarios
-- Simulate full attack paths
-- Global campaign scoring
-- Multi-stage detection analysis
-
----
-
-### 📄 Reporting
-
-- Scenario report
-- Campaign report
-- Copyable output (SOC-style)
+- Replay full simulation timeline
+- Pause / resume / speed control
+- Investigate detection sequence step-by-step
 
 ---
 
-## 🖥️ UI Design
+## 🧩 Ecosystem Integration
+
+Purple Team Core integrates with external modules:
+
+- PhishScope → phishing detection
+- SOC Command Center → alert triage
+- OSINT tools → enrichment
+- Threat Intel → IoC correlation
+
+Communication via:
+
+```text
+?incident=incident-001&user=j.smith&ip=185.77.44.21
+```
+
+---
+
+## 🧪 Example Scenario
+
+**Phishing-Led Identity Compromise**
+
+- User receives phishing email
+- Credentials are harvested
+- Suspicious login detected
+- SOC alerts triggered
+- Incident is analyzed and reported
+
+---
+
+## 🖥️ UI / UX
 
 - Cyber SaaS interface
-- SOC dashboard inspiration
-- Dark mode (neon / purple / blue)
-- Live activity feed (terminal style)
-- Clean 3-column layout
+- Dark mode (purple / blue / neon)
+- Panel-based layout (PanelCard system)
+- Analyst workflow oriented
+- Real-time simulation feel
 
 ---
 
@@ -103,6 +148,7 @@ Attack → Telemetry → Detection → Validation → Improvement
 - React (Vite)
 - Tailwind CSS
 - Recharts
+- jsPDF
 - Lucide Icons
 
 ---
@@ -116,61 +162,47 @@ npm run dev
 
 ---
 
-## 🧠 What This Project Demonstrates
+## 🧠 What This App Demonstrates
 
-This project showcases:
+- Purple Team methodology
+- Detection engineering thinking
+- Security coverage analysis
+- Incident reporting workflow
+- Advanced React UI architecture
 
-Threat simulation understanding
-Detection engineering mindset
-Defensive coverage analysis
-Purple team methodology
-Security visualization skills
-Frontend engineering (React + Tailwind)
+---
+
+## 🚀 Roadmap
+
+- AI-assisted analysis (Copilot)
+- Real SIEM-like log ingestion
+- Detection rule engine
+- Scenario builder (drag & drop)
+- Multi-incident management
+
+---
+
+## 🔗 Related Project
+
+👉 Threat Operations Lab (multi-app ecosystem)
 
 ---
 
 ## 👤 Author
 
-Cybersecurity enthusiast building hands-on labs to master:
+Cybersecurity builder focused on:
 
-Blue Team
-SOC Analysis
-Threat Detection
-Purple Teaming
-
----
-
-## 🔥 Future Improvements (V2)
-
-Real log ingestion (JSON / SIEM-like)
-Custom rule engine
-Attack chaining editor (drag & drop)
-User authentication + saved sessions
-Export PDF reports
-Integration with real tools (Wazuh, Sigma rules)
+- SOC Analysis
+- Threat Detection
+- Purple Teaming
+- Hands-on cyber labs
 
 ---
 
-## Purple Team Ecosystem
+## ⭐ Support
 
-Purple Team Lab acts as the central hub of a modular cybersecurity simulation ecosystem.
+If you like this project:
 
-The ecosystem connects several independent React applications through a shared mocked incident dataset and deep links using query parameters.
-
-### Incident Flow
-
-Phishing → Identity Compromise → Lateral Movement → SOC Detection → OSINT Enrichment → Threat Intelligence → Report
-
-### Connected Modules
-
-| Module                             | Purpose                            | Deep Link                             |
-| ---------------------------------- | ---------------------------------- | ------------------------------------- |
-| Phishing Scope                     | Investigate phishing entry points  | `?incident=incident-001`              |
-| Identity & Access Attack Simulator | Explore compromised identity paths | `?user=j.smith&incident=incident-001` |
-| SOC Simulator Command Center       | Review detection and triage        | `?incident=incident-001`              |
-| OSINT Investigator                 | Enrich IP/domain indicators        | `?ip=185.77.44.21`                    |
-| Threat Intelligence Platform       | Correlate IoCs and threat clusters | `?ioc=secure-login-support.com`       |
-
-⭐ If you like this project
-
-Give it a star and follow for more cyber labs.
+- ⭐ Star the repo
+- 🔁 Share it
+- 🧠 Follow for more cyber labs

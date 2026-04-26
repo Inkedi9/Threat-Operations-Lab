@@ -2,12 +2,14 @@
    🧩 Shared Mock Incidents
 ======================================== */
 
+import { INCIDENT_STATES } from "./incidentStates";
+
 export const ecosystemIncidents = [
   {
     id: "incident-001",
     title: "Phishing-Led Identity Compromise",
-    status: "partially_detected",
-    severity: "hight",
+    status: INCIDENT_STATES.IN_PROGRESS,
+    severity: "high",
     context: {
       incidentId: "incident-001",
       user: "j.smith",
