@@ -234,13 +234,21 @@ export default function App() {
 
   const heartbeat = demoMode || alertsGlobal.length > 0;
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(new Date());
-    }, 1000);
+  function resetEnvironment() {
+    // Clear ALL local storage
+    localStorage.clear();
 
-    return () => clearInterval(interval);
-  }, []);
+    // Reset states
+    setAlertsGlobal([]);
+    setPage("alerts");
+    setDemoMode(false);
+    setDemoStep("idle");
+    setDemoTrigger(0);
+    setResetTrigger(Date.now());
+
+    // Optional: reload UI clean
+    window.location.reload();
+  }
 
   return (
     <div className="min-h-screen bg-[radial-gradient(circle_at_top_left,rgba(37,99,235,0.18),transparent_32%),radial-gradient(circle_at_85%_10%,rgba(14,165,233,0.10),transparent_28%),linear-gradient(135deg,#020617,#07111f_45%,#020617)] text-slate-100">
@@ -332,6 +340,12 @@ export default function App() {
                 </div>
 
                 <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={resetEnvironment}
+                    className="inline-flex items-center gap-2 rounded-xl border border-red-500/30 bg-red-500/15 px-4 py-2 text-sm font-semibold text-red-200 transition hover:bg-red-500/25"
+                  >
+                    🧹 Reset Environment
+                  </button>
                   <button
                     onClick={startRecruiterDemo}
                     className="inline-flex items-center gap-2 rounded-xl border border-blue-500/30 bg-blue-500/15 px-4 py-2 text-sm font-semibold text-blue-200 transition hover:bg-blue-500/25"

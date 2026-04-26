@@ -15,6 +15,7 @@ import { PhishHeader } from "@/components/ui/PhishHeader";
 import { PhishBadge } from "@/components/ui/PhishBadge";
 import { PhishButton } from "@/components/ui/PhishButton";
 import { PhishProgress } from "@/components/ui/PhishProgress";
+import { ECOSYSTEM_APPS } from "../config/ecosystem";
 
 import { getIncidentParams } from "../lib/incidentParams";
 import LinkedIncidentBanner from "../components/ecosystem/LinkedIncidentBanner";
@@ -167,16 +168,27 @@ export default function Simulator() {
 
     function buildSOCLink() {
         const params = new URLSearchParams({
-            incident: incidentParams.incidentId || "incident-001",
-            user: "j.smith",
-            ip: "185.77.44.21",
-            technique: "T1566",
+            incident: incidentParams.incidentId || incident.id,
+            user: incidentParams.user || incident.victim.user,
+            ip: incidentParams.ip || incident.attacker.ip,
+            technique: incidentParams.technique || incident.context.technique,
             phishResult: "confirmed",
-            domain: linkedIndicator || "secure-login-support.com",
-            returnTo: "https://phishscope.vercel.app/simulator",
+            domain: linkedIndicator || incident.attacker.domain,
+            returnTo: `${ECOSYSTEM_APPS.phishingScope.url}/simulator`,
         });
 
-        return `https://soc-simulator-kappa.vercel.app/?${params.toString()}`;
+        return `${ECOSYSTEM_APPS.socSimulator.url}/?${params.toString()}`;
+    }
+
+    function resetPhishScopeEnvironment() {
+        localStorage.removeItem("phishscope-results");
+
+        setResults([]);
+        setSelectedEmail(scenarios[0]);
+        setVerdict("");
+        setSelectedFlags([]);
+        setCurrentResult(null);
+        setConfirmedSOCLink(null);
     }
 
     return (
@@ -284,6 +296,14 @@ export default function Simulator() {
                                                 >
                                                     Open SOC with confirmed phishing
                                                 </a>
+                                                <a
+                                                    href={`${ECOSYSTEM_APPS.purpleTeamLab.url}/?incident=${incident.id}`}
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                    className="ml-3 mt-4 inline-flex rounded-xl border border-purple-400/30 bg-purple-400/10 px-4 py-2 text-sm font-semibold text-purple-200 transition hover:bg-purple-400/20"
+                                                >
+                                                    Open Purple Report
+                                                </a>
                                             </div>
                                         </div>
                                     </PhishPanel>
@@ -353,6 +373,9 @@ export default function Simulator() {
                             )}
 
                             <div className="flex flex-wrap justify-end gap-3">
+                                <PhishButton tone="danger" onClick={resetPhishScopeEnvironment}>
+                                    🧹 Reset Lab
+                                </PhishButton>
                                 <PhishButton tone="slate" onClick={handleRestartSession}>
                                     <RotateCcw className="h-4 w-4" />
                                     Restart Session
