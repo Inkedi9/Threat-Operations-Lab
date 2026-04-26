@@ -1,0 +1,195 @@
+export const scenarios = [
+  {
+    id: "bruteforce",
+    name: "Bruteforce Login",
+    technique: "T1110",
+    tactic: "Credential Access",
+    severity: "Medium",
+    status: "Detected",
+    coverage: 92,
+    summary:
+      "Repeated authentication attempts against a privileged account on a public-facing login portal.",
+    detections: [
+      "Multiple failed logins",
+      "Source IP correlation",
+      "Authentication threshold exceeded",
+    ],
+    gaps: ["No MFA enforcement on initial access", "No geo-anomaly enrichment"],
+    recommendations: [
+      "Enable account lockout policy after repeated failures.",
+      "Correlate multiple auth failures by source IP and username.",
+      "Enforce MFA for privileged access.",
+    ],
+    events: [
+      {
+        time: "10:00:01",
+        type: "attack",
+        title: "Attack launched",
+        message: "Multiple login attempts started from 10.10.10.24",
+      },
+      {
+        time: "10:00:03",
+        type: "log",
+        title: "Authentication log",
+        message: "Failed login for user admin",
+      },
+      {
+        time: "10:00:05",
+        type: "log",
+        title: "Authentication log",
+        message: "Failed login for user admin",
+      },
+      {
+        time: "10:00:07",
+        type: "alert",
+        title: "Blue Team alert",
+        message: "Bruteforce threshold exceeded on web auth service",
+      },
+      {
+        time: "10:00:09",
+        type: "purple",
+        title: "Purple validation",
+        message: "Detection worked as expected for repeated auth failures",
+      },
+    ],
+  },
+  {
+    id: "scan",
+    name: "Network Scan",
+    technique: "T1046",
+    tactic: "Discovery",
+    severity: "Low",
+    status: "Partially Detected",
+    coverage: 61,
+    summary:
+      "Horizontal service discovery activity across internal subnets with unusual SYN patterns.",
+    detections: ["Unusual SYN burst", "Reconnaissance network signature"],
+    gaps: [
+      "Poor horizontal scan correlation",
+      "Weak visibility on east-west traffic",
+    ],
+    recommendations: [
+      "Improve scan correlation across multiple hosts and ports.",
+      "Add IDS tuning for horizontal reconnaissance.",
+      "Increase visibility on east-west traffic.",
+    ],
+    events: [
+      {
+        time: "11:15:01",
+        type: "attack",
+        title: "Attack launched",
+        message: "Internal port scan initiated from 172.16.1.50",
+      },
+      {
+        time: "11:15:02",
+        type: "log",
+        title: "Network log",
+        message: "Multiple SYN packets detected to uncommon ports",
+      },
+      {
+        time: "11:15:06",
+        type: "alert",
+        title: "Blue Team alert",
+        message: "Reconnaissance pattern partially matched",
+      },
+      {
+        time: "11:15:10",
+        type: "purple",
+        title: "Purple validation",
+        message: "Detection exists but lacks scope and precision",
+      },
+    ],
+  },
+  {
+    id: "mimikatz",
+    name: "Credential Dumping",
+    technique: "T1003",
+    tactic: "Credential Access",
+    severity: "High",
+    status: "Missed",
+    coverage: 24,
+    summary:
+      "Post-exploitation credential dumping attempt through suspicious memory access behavior.",
+    detections: ["Suspicious process memory access"],
+    gaps: [
+      "No high-confidence LSASS alert",
+      "EDR rules not tuned for credential dumping",
+      "Insufficient post-exploitation visibility",
+    ],
+    recommendations: [
+      "Deploy LSASS access monitoring detections.",
+      "Improve EDR rules for credential dumping behaviors.",
+      "Harden hosts against post-exploitation tooling.",
+    ],
+    events: [
+      {
+        time: "14:42:01",
+        type: "attack",
+        title: "Attack launched",
+        message: "Credential dumping activity executed on endpoint WS-07",
+      },
+      {
+        time: "14:42:03",
+        type: "log",
+        title: "Endpoint log",
+        message: "Suspicious process memory access observed",
+      },
+      {
+        time: "14:42:07",
+        type: "purple",
+        title: "Purple validation",
+        message: "No high-confidence alert triggered: defensive gap identified",
+      },
+    ],
+  },
+  {
+    id: "exfiltration",
+    name: "Data Exfiltration",
+    technique: "T1041",
+    tactic: "Exfiltration",
+    severity: "High",
+    status: "Partially Detected",
+    coverage: 48,
+    summary:
+      "Sensitive archive staged and transferred over an unusual outbound channel.",
+    detections: ["Archive creation on endpoint", "Outbound rare destination"],
+    gaps: ["No DLP correlation", "Low-confidence exfiltration alerting"],
+    recommendations: [
+      "Add DLP-style detections for abnormal outbound transfer volume.",
+      "Correlate archive creation followed by external network activity.",
+      "Improve alerting for rare destinations.",
+    ],
+    events: [
+      {
+        time: "16:21:01",
+        type: "attack",
+        title: "Attack launched",
+        message: "Archive created from sensitive project files",
+      },
+      {
+        time: "16:21:04",
+        type: "log",
+        title: "Endpoint log",
+        message: "Compressed file generated in temp directory",
+      },
+      {
+        time: "16:21:07",
+        type: "log",
+        title: "Network log",
+        message: "Outbound connection to unusual external host detected",
+      },
+      {
+        time: "16:21:11",
+        type: "alert",
+        title: "Blue Team alert",
+        message: "Suspicious outbound transfer flagged with low confidence",
+      },
+      {
+        time: "16:21:14",
+        type: "purple",
+        title: "Purple validation",
+        message: "Behavior noticed, but response coverage remains incomplete",
+      },
+    ],
+  },
+];
