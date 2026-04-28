@@ -6,14 +6,15 @@ It orchestrates attack scenarios, triggers events across modules, and simulates 
 
 Scenario Orchestration Engine : Purple Team Core
 
-→ See: https://github.com/your-org/purple-team-core
+→ See: https://github.com/Inkedi9/purple-team-core
 → Live https://purple-team-core.vercel.app
 
-threat-operations-lab/
+```threat-operations-lab/
 ├── README.md
 └── docs/
 ├── architecture.md
 └── roadmap.md
+```
 
 flowchart LR
 A[Adversary Simulation Core] --> B[SOC Operations Console]
@@ -50,12 +51,3 @@ participant CTI as Threat Intel Platform
 | OSINT Investigator        | Context enrichment and investigation       | Active      |
 | Threat Intel Platform     | IOC enrichment and threat correlation      | Planned     |
 | Identity Attack Simulator | Identity-based attack scenarios            | Planned     |
-
-         [ OSINT Investigator ]
-                     |
-
-[ PhishScope ] — [ Purple Team Core ] — [ SOC Command Center ]
-|
-[ Threat Intel Platform ]
-|
-[ Identity Attack Simulator ]

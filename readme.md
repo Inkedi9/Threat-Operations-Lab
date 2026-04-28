@@ -171,14 +171,14 @@ Threat Operations Lab Project – Interactive Security Lab Series
 
 ## Architecture
 
-```CyberOps Ecosystem/
-├── cyberops-ecosystem          # repo vitrine / documentation globale
-├── purple-team-lab             # projet mère / scénarios
-├── osint-investigator
-├── soc-command-center
-├── phishscope
-├── threat-intel-platform       # en cours
-└── identity-attack-simulator   # en cours
+```Threat Operations Lab/
+├──── cyberops-ecosystem          # repo vitrine / documentation globale
+├──── purple-team-lab             # projet mère / scénarios
+├──── osint-investigator
+├──── soc-command-center
+├──── phishscope
+├──── threat-intel-platform       # en cours
+└──── identity-attack-simulator   # en cours
 ```
 
 ```README.md
