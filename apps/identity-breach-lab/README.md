@@ -1,20 +1,18 @@
-🧨 Identity Breach Lab
+# 🧨 Identity Breach Lab
 
 ![Status](https://img.shields.io/badge/status-active-red)
 ![Frontend](https://img.shields.io/badge/frontend-react-blue)
 ![Graph](https://img.shields.io/badge/graph-react--flow-purple)
-![License](https://img.shields.io/badge/license-MIT-green)
 ![Security](https://img.shields.io/badge/domain-cybersecurity-black)
 ![MITRE](https://img.shields.io/badge/framework-MITRE%20ATT%26CK-orange)
 ![Stars](https://img.shields.io/github/stars/your-repo?style=social)
-![Forks](https://img.shields.io/github/forks/your-repo?style=social)
 
 Interactive Identity Attack Simulator & Graph-Based Offensive Analysis Engine
 
 ## 🎬 Demo
 
 ![demo](./demo.gif)
-👉 **Live Demo**: https://your-link.vercel.app
+👉 **Live Demo**: https://identity-breach-lab.vercel.app/
 
 ## ⚡ What is this?
 
@@ -78,6 +76,8 @@ Identity → Privilege → Access → System → Crown Jewel
 
 ✔ Deterministic simulation
 ✔ Visual attack progression
+
+---
 
 ## 🧠 Attack Intelligence Layer
 
@@ -248,6 +248,8 @@ It is:
 
 Built as an advanced cybersecurity + frontend engineering project
 focusing on identity attacks and graph intelligence systems
+
+---
 
 ## ⭐ Final Note
 
