@@ -43,11 +43,11 @@ participant CTI as Threat Intel Platform
     SOC->>CTI: Submit IoCs for enrichment
     CTI-->>SOC: Return intelligence signals
 
-| Module                    | Role                                       | Status      |
-| ------------------------- | ------------------------------------------ | ----------- |
-| Purple Team Core          | Attack simulation and Red/Blue validation  | In Progress |
-| SOC Command Center        | Detection, triage, investigation, response | Active      |
-| PhishScope                | Human-layer phishing simulation            | Active      |
-| OSINT Investigator        | Context enrichment and investigation       | Active      |
-| Threat Intel Platform     | IOC enrichment and threat correlation      | Planned     |
-| Identity Attack Simulator | Identity-based attack scenarios            | Planned     |
+| Module                | Role                                       | Status      |
+| --------------------- | ------------------------------------------ | ----------- |
+| Purple Team Core      | Attack simulation and Red/Blue validation  | In Progress |
+| SOC Command Center    | Detection, triage, investigation, response | Active      |
+| PhishScope            | Human-layer phishing simulation            | Active      |
+| OSINT Investigator    | Context enrichment and investigation       | Active      |
+| Threat Intel Platform | IOC enrichment and threat correlation      | Active      |
+| Identity Breach Lab   | Identity-based attack scenarios            | Active      |

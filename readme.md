@@ -48,7 +48,7 @@ Simulates attacker behavior and attack chains.
 
 ---
 
-### 🔵 SOC Operations Console
+### 🔵 SOC Command Center
 
 ![status](https://img.shields.io/badge/status-active-22c55e?style=flat-square)
 
@@ -86,9 +86,9 @@ Open-source intelligence module.
 
 ---
 
-### 🧠 Threat Intelligence Platform _(Planned)_
+### 🧠 Threat Intelligence Platform
 
-![status](https://img.shields.io/badge/status-planned-6b7280?style=flat-square)
+![status](https://img.shields.io/badge/status-active-22c55e?style=flat-square)
 
 - IOC enrichment
 - Threat scoring
@@ -96,9 +96,9 @@ Open-source intelligence module.
 
 ---
 
-### 🧬 Identity Attack Simulator _(Planned)_
+### 🧬 Identity Breach Lab
 
-![status](https://img.shields.io/badge/status-planned-6b7280?style=flat-square)
+![status](https://img.shields.io/badge/status-active-22c55e?style=flat-square)
 
 - Credential abuse
 - Account takeover simulation
@@ -143,8 +143,8 @@ OSINT → Context Enrichment → SOC
 | SOC Operations Console       | 🟢 Active      |
 | PhishScope                   | 🟢 Active      |
 | OSINT Investigator           | 🟢 Active      |
-| Threat Intelligence Platform | ⚪ Planned     |
-| Identity Attack Simulator    | ⚪ Planned     |
+| Threat Intelligence Platform | 🟢 Active      |
+| Identity Attack Simulator    | 🟢 Active      |
 
 ---
 
@@ -178,7 +178,7 @@ Threat Operations Lab Project – Interactive Security Lab Series
 ├──── soc-command-center
 ├──── phishscope
 ├──── threat-intel-platform       # en cours
-└──── identity-attack-simulator   # en cours
+└──── identity-breach-lab         # en cours
 ```
 
 ```README.md
