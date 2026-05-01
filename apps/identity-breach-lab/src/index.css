@@ -1,0 +1,126 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+  font-family: Inter, system-ui, sans-serif;
+  background: #040405;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(127, 29, 29, 0.75) rgba(0, 0, 0, 0.95);
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+  background:
+    radial-gradient(circle at top, rgba(127, 29, 29, 0.16), transparent 26%),
+    radial-gradient(circle at top right, rgba(239, 68, 68, 0.05), transparent 24%),
+    linear-gradient(180deg, #040405 0%, #070709 100%);
+  color: #e7e5e4;
+}
+
+body {
+  background-size: cover;
+  overflow-x: hidden;
+}
+
+ * {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: rgba(239, 68, 68, 0.22);
+}
+
+@layer components {
+  .panel {
+    @apply rounded-2xl border border-danger/0 bg-panel shadow-danger backdrop-blur;
+  }
+
+  .panel-red {
+    @apply rounded-2xl border border-danger/30 bg-panelAlt shadow-danger backdrop-blur;
+  }
+
+  .panel-red-soft {
+    @apply rounded-2xl border border-danger/20 bg-panelAlt shadow-dangerSoft backdrop-blur;
+  }
+
+  .text-dim {
+    @apply text-sm text-muted;
+  }
+
+  .grid-bg {
+    background-image: theme("backgroundImage.grid");
+    background-size: 32px 32px;
+  }
+
+  .obsidian-border {
+    @apply border border-line/70;
+  }
+
+  .obsidian-surface {
+    @apply bg-black/20 backdrop-blur;
+  }
+}
+
+.react-flow__edge.replay-active-edge .react-flow__edge-path {
+    stroke: rgb(248 113 113);
+    filter: drop-shadow(0 0 8px rgba(239, 68, 68, 0.85));
+    stroke-dasharray: 8;
+    animation: replay-edge-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes replay-edge-pulse {
+    0% {
+        stroke-opacity: 0.55;
+        stroke-width: 2.5;
+    }
+
+    50% {
+        stroke-opacity: 1;
+        stroke-width: 4;
+    }
+
+    100% {
+        stroke-opacity: 0.55;
+        stroke-width: 2.5;
+    }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020203;
+}
+
+::-webkit-scrollbar-thumb {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(0, 0, 0, 0.95),
+      rgba(127, 29, 29, 0.8),
+      rgba(0, 0, 0, 0.95)
+    );
+  border-radius: 999px;
+  border: 2px solid #020203;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15, 15, 18, 1),
+      rgba(185, 28, 28, 0.85),
+      rgba(15, 15, 18, 1)
+    );
+}
